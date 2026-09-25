@@ -1,0 +1,557 @@
+@extends('layouts.layout')
+
+@section('language')
+    {{ (Session::has("locale"))? Session::get("locale") : "en" }}
+@endsection
+
+@section('lang')
+    {{ (Session::has("locale"))? app()->setLocale(Session::get("locale")) : app()->setLocale('en') }}
+@endsection
+
+@section('breadcrum')
+    <li class="breadcrumb-item"><a href="{{ route("enseignant") }}">Enseignants</a></li>
+    <li class="active">{{ $data->lastname }}</li>
+@endsection
+
+@section('page')
+    {{ Session::put("page", "enseignant") }}
+    Gestion des enseignants
+@endsection
+
+
+@section('content')
+    <div class="page-content">
+        <div class="ace-settings-container" id="ace-settings-container">
+            <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+                <i class="ace-icon fa fa-cog bigger-130"></i>
+            </div>
+
+            <div class="ace-settings-box clearfix" id="ace-settings-box">
+                <div class="pull-left width-50">
+                    <div class="ace-settings-item">
+                        <div class="pull-left">
+                            <select id="skin-colorpicker" class="hide">
+                                <option data-skin="no-skin" value="#438EB9">#438EB9</option>
+                                <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                                <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                                <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                            </select>
+                        </div>
+                        <span>&nbsp; Choose Skin</span>
+                    </div>
+
+                    <div class="ace-settings-item">
+                        <input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-navbar" autocomplete="off" />
+                        <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+                    </div>
+
+                    <div class="ace-settings-item">
+                        <input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-sidebar" autocomplete="off" />
+                        <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+                    </div>
+
+                    <div class="ace-settings-item">
+                        <input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-breadcrumbs" autocomplete="off" />
+                        <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+                    </div>
+
+                    <div class="ace-settings-item">
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" autocomplete="off" />
+                        <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+                    </div>
+
+                    <div class="ace-settings-item">
+                        <input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-add-container" autocomplete="off" />
+                        <label class="lbl" for="ace-settings-add-container">
+                            Inside
+                            <b>.container</b>
+                        </label>
+                    </div>
+                </div><!-- /.pull-left -->
+
+                <div class="pull-left width-50">
+                    <div class="ace-settings-item">
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" autocomplete="off" />
+                        <label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>
+                    </div>
+
+                    <div class="ace-settings-item">
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" autocomplete="off" />
+                        <label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>
+                    </div>
+
+                    <div class="ace-settings-item">
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" autocomplete="off" />
+                        <label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>
+                    </div>
+                </div><!-- /.pull-left -->
+            </div><!-- /.ace-settings-box -->
+        </div><!-- /.ace-settings-container -->
+
+        <div class="page-header">
+            <h1>
+                Gestion de la disponibilite
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    Details
+                </small>
+            </h1>
+        </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="widget-box transparent">
+                        <div class="widget-header widget-header-large">
+                            <h3 class="widget-title grey lighter">
+                                <i class="ace-icon fa fa-eye green"></i>
+                                Fiche de description
+                            </h3>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-24">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <img src="{{ (isset($data) && !empty($data->photo))? $data->photo : "assets/images/avatars/avatar.png" }}" alt="" class="img-fluid" style="width:100%">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="row">
+                                            <div class="col-xs-11 label label-lg label-info arrowed-in arrowed-right">
+                                                <b>IDENTIFICATION</b>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <ul class="list-unstyled  spaced">
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>{{ $data->firstname }}&nbsp;{{ $data->lastname }}
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>{{ $data->nationality }}
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>{{ $data->phonenumber }}
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>{{ $data->email }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div><!-- /.col -->
+
+                                    <div class="col-sm-4">
+                                        <div class="row">
+                                            <div class="col-xs-11 label label-lg label-success arrowed-in arrowed-right">
+                                                <b>PROFILE</b>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <ul class="list-unstyled  spaced">
+                                                <li>
+                                                    <h6 class="font-weight-bold">Diplome de référence</h6>
+                                                    <i class="ace-icon fa fa-caret-right green"></i> {{ $data->diplome }}
+                                                </li>
+
+                                                <li>
+                                                    <h6>Grade</h6>
+                                                    <i class="ace-icon fa fa-caret-right green"></i> {{ $data->grade }}
+                                                </li>
+
+                                                <li>
+                                                    <h6>Specialite</h6>
+                                                    <i class="ace-icon fa fa-caret-right green"></i> {{ $data->specialite }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div><!-- /.col -->
+
+                                </div><!-- /.row -->
+
+
+                                <div class="space"></div>
+                                <br>
+                                <div class="btn-group">
+                                    <a href="{{ route("enseignantEdit", ["slug"=>$data->id]) }}" class="btn btn-warning"><i class="fa fa-pencil"></i>&nbsp;Modifier</a>
+                                    <a href="{{ route("enseignantDelete", ["slug"=>$data->id]) }}" class="btn btn-danger"><i class="fa fa-trash"></i>&nbsp;Supprimer</a>
+                                </div>
+
+                                <div class="space"></div>
+                                <div class="row">
+                                    <div class="col-xs-12 label label-lg label-warning arrowed-in arrowed-right">
+                                        <b>MATIERES</b>
+                                    </div>
+                                </div>
+                                <br>
+                                <div >
+                                    <form action="{{ route("emStore") }}" method="post">
+                                        @csrf
+                                        <table class="table border-0 table-striped">
+                                            <thead>
+                                            <tr>
+                                                <td>Matiere</td>
+                                                <td>Niveau</td>
+                                                <td  width="10%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-control" name="matiere" id="matiere" >
+                                                        <option value=""></option>
+                                                        @foreach($data2 as $m)
+                                                            <option value="{{ $m->id }}">{{ $m->libelleUE }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td><input type="number" class="form-control" placeholder="Niveau" name="niveau" id="niveau" min="1"></td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                                                    <input type="hidden" name="enseignant" value="{{ $data->id }}">
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </form>
+                                </div>
+                                <div>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <th>Matiere</th>
+                                        <th>Spécialité</th>
+                                        <th>Niveau</th>
+                                        <th></th>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($data->enseignantMatiere as $em)
+                                            <tr>
+                                                <td>{{ $em->matiere->libelleUE }}</td>
+                                                <td>{{ $em->matiere->specialite->libelleSpecialite }}</td>
+                                                <td>{{ $em->niveau }}</td>
+                                                <td>
+                                                    <div class="hidden-sm hidden-xs action-buttons">
+                                                        <a class="red" href="{{ route("emDelete", ["slug"=>$em->id]) }}">
+                                                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="hidden-md hidden-lg">
+                                                        <div class="inline pos-rel">
+                                                            <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                                                                <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                                                            </button>
+
+                                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                                <li>
+                                                                    <a href="{{ route("emDelete", ["slug"=>$em->id]) }}" class="tooltip-error" data-rel="tooltip" title="Delete">
+                                                                        <span class="red">
+                                                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                                        </span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="space"></div>
+                                <div class="row">
+                                    <div class="col-xs-12 label label-lg label-warning arrowed-in arrowed-right">
+                                        <b>DISPONIBILITE</b>
+                                    </div>
+                                </div>
+                                <br>
+                                <div >
+                                    <form action="{{ route("enseignantDisponibilite") }}" method="post">
+                                        @csrf
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Date de debut</th>
+                                                <th colspan="2">
+                                                    <input type="date" class="form-control @error('start') is-invalid @enderror" value="{{ (isset($data->disponibilites) && count($data->disponibilites)>0)? $data->disponibilites[count($data->disponibilites)-1]->started : old('start')  }}" placeholder="Date de debut" name="start" id="start">
+                                                    @error('start')
+                                                    <span class="invalid-feedback text-danger" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>Jours</th>
+                                                <th>Observation</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-control @error('jours')   is-invalid @enderror" name="jours[]" id="jours" multiple>
+                                                        <option value="lundi" {{ (isset($data->disponibilites) && count($data->disponibilites)>0)? (in_array("lundi",json_decode($data->disponibilites[count($data->disponibilites)-1]->days, true))? "selected" : ""): ""  }}>Lundi</option>
+                                                        <option value="mardi" {{ (isset($data->disponibilites) && count($data->disponibilites)>0)? (in_array("mardi",json_decode($data->disponibilites[count($data->disponibilites)-1]->days, true))? "selected" : ""): ""  }}>Mardi</option>
+                                                        <option value="mercredi" {{ (isset($data->disponibilites) && count($data->disponibilites)>0)? (in_array("mercredi",json_decode($data->disponibilites[count($data->disponibilites)-1]->days, true))? "selected" : ""): ""  }}>Mercredi</option>
+                                                        <option value="jeudi" {{ (isset($data->disponibilites) && count($data->disponibilites)>0)? (in_array("jeudi",json_decode($data->disponibilites[count($data->disponibilites)-1]->days, true))? "selected" : ""): ""  }}>Jeudi</option>
+                                                        <option value="vendredi" {{ (isset($data->disponibilites) && count($data->disponibilites)>0)? (in_array("vendredi",json_decode($data->disponibilites[count($data->disponibilites)-1]->days, true))? "selected" : ""): ""  }}>Vendredi</option>
+                                                        <option value="samedi" {{ (isset($data->disponibilites) && count($data->disponibilites)>0)? (in_array("samedi",json_decode($data->disponibilites[count($data->disponibilites)-1]->days, true))? "selected" : ""): ""  }}>Samedi</option>
+                                                    </select>
+                                                    @error('jours')
+                                                        <span class="invalid-feedback text-danger" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </td>
+                                                <td width="40%">
+                                                    <textarea class="form-control" rows="5" name="observation" id="observation">{{ (isset($data->disponibilites) && count($data->disponibilites)>0)? $data->disponibilites[count($data->disponibilites)-1]->observation : ""  }}</textarea>
+                                                </td>
+                                                <td width="10%">
+                                                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                                                    <input type="hidden" name="enseignant" value="{{ $data->id }}">
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.col -->
+    </div>
+    </div>
+@endsection
+
+@section("script")
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/jquery.dataTables.bootstrap.min.js"></script>
+    <script src="assets/js/dataTables.buttons.min.js"></script>
+    <script src="assets/js/buttons.flash.min.js"></script>
+    <script src="assets/js/buttons.html5.min.js"></script>
+    <script src="assets/js/buttons.print.min.js"></script>
+    <script src="assets/js/buttons.colVis.min.js"></script>
+    <script src="assets/js/dataTables.select.min.js"></script>
+
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+        jQuery(function($) {
+            //initiate dataTables plugin
+            var myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                    .DataTable( {
+                        bAutoWidth: false,
+                        "aoColumns": [
+                            { "bSortable": false },
+                            null, null,null, null,
+                            { "bSortable": false }
+                        ],
+                        "aaSorting": [],
+
+
+                        //"bProcessing": true,
+                        //"bServerSide": true,
+                        //"sAjaxSource": "http://127.0.0.1/table.php"	,
+
+                        //,
+                        //"sScrollY": "200px",
+                        //"bPaginate": false,
+
+                        //"sScrollX": "100%",
+                        //"sScrollXInner": "120%",
+                        //"bScrollCollapse": true,
+                        //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
+                        //you may want to wrap the table inside a "div.dataTables_borderWrap" element
+
+                        //"iDisplayLength": 50
+
+
+                        select: {
+                            style: 'multi'
+                        }
+                    } );
+
+
+
+            $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
+
+            new $.fn.dataTable.Buttons( myTable, {
+                buttons: [
+                    {
+                        "extend": "colvis",
+                        "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>Show/hide columns</span>",
+                        "className": "btn btn-white btn-primary btn-bold",
+                        columns: ':not(:first):not(:last)'
+                    },
+                    {
+                        "extend": "copy",
+                        "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>Copy to clipboard</span>",
+                        "className": "btn btn-white btn-primary btn-bold"
+                    },
+                    {
+                        "extend": "csv",
+                        "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>Export to CSV</span>",
+                        "className": "btn btn-white btn-primary btn-bold"
+                    },
+                    {
+                        "extend": "excel",
+                        "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'>Export to Excel</span>",
+                        "className": "btn btn-white btn-primary btn-bold"
+                    },
+                    {
+                        "extend": "pdf",
+                        "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>Export to PDF</span>",
+                        "className": "btn btn-white btn-primary btn-bold"
+                    },
+                    {
+                        "extend": "print",
+                        "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>Print</span>",
+                        "className": "btn btn-white btn-primary btn-bold",
+                        autoPrint: false,
+                        message: 'This print was produced using the Print button for DataTables'
+                    }
+                ]
+            } );
+            myTable.buttons().container().appendTo( $('.tableTools-container') );
+
+            //style the message box
+            var defaultCopyAction = myTable.button(1).action();
+            myTable.button(1).action(function (e, dt, button, config) {
+                defaultCopyAction(e, dt, button, config);
+                $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
+            });
+
+
+            var defaultColvisAction = myTable.button(0).action();
+            myTable.button(0).action(function (e, dt, button, config) {
+
+                defaultColvisAction(e, dt, button, config);
+
+
+                if($('.dt-button-collection > .dropdown-menu').length == 0) {
+                    $('.dt-button-collection')
+                        .wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
+                        .find('a').attr('href', '#').wrap("<li />")
+                }
+                $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
+            });
+
+            ////
+
+            setTimeout(function() {
+                $($('.tableTools-container')).find('a.dt-button').each(function() {
+                    var div = $(this).find(' > div').first();
+                    if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
+                    else $(this).tooltip({container: 'body', title: $(this).text()});
+                });
+            }, 500);
+
+
+
+
+
+            myTable.on( 'select', function ( e, dt, type, index ) {
+                if ( type === 'row' ) {
+                    $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', true);
+                }
+            } );
+            myTable.on( 'deselect', function ( e, dt, type, index ) {
+                if ( type === 'row' ) {
+                    $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', false);
+                }
+            } );
+
+
+
+
+            /////////////////////////////////
+            //table checkboxes
+            $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
+
+            //select/deselect all rows according to table header checkbox
+            $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function(){
+                var th_checked = this.checked;//checkbox inside "TH" table header
+
+                $('#dynamic-table').find('tbody > tr').each(function(){
+                    var row = this;
+                    if(th_checked) myTable.row(row).select();
+                    else  myTable.row(row).deselect();
+                });
+            });
+
+            //select/deselect a row when the checkbox is checked/unchecked
+            $('#dynamic-table').on('click', 'td input[type=checkbox]' , function(){
+                var row = $(this).closest('tr').get(0);
+                if(this.checked) myTable.row(row).deselect();
+                else myTable.row(row).select();
+            });
+
+
+
+            $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+            });
+
+
+
+            //And for the first simple table, which doesn't have TableTools or dataTables
+            //select/deselect all rows according to table header checkbox
+            var active_class = 'active';
+            $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
+                var th_checked = this.checked;//checkbox inside "TH" table header
+
+                $(this).closest('table').find('tbody > tr').each(function(){
+                    var row = this;
+                    if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
+                    else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
+                });
+            });
+
+            //select/deselect a row when the checkbox is checked/unchecked
+            $('#simple-table').on('click', 'td input[type=checkbox]' , function(){
+                var $row = $(this).closest('tr');
+                if($row.is('.detail-row ')) return;
+                if(this.checked) $row.addClass(active_class);
+                else $row.removeClass(active_class);
+            });
+
+
+
+            /********************************/
+            //add tooltip for small view action buttons in dropdown menu
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+            //tooltip placement on right or left
+            function tooltip_placement(context, source) {
+                var $source = $(source);
+                var $parent = $source.closest('table')
+                var off1 = $parent.offset();
+                var w1 = $parent.width();
+
+                var off2 = $source.offset();
+                //var w2 = $source.width();
+
+                if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+                return 'left';
+            }
+
+
+            $('.show-details-btn').on('click', function(e) {
+                e.preventDefault();
+                $(this).closest('tr').next().toggleClass('open');
+                $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+            });
+
+        })
+    </script>
+@endsection
